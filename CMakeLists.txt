@@ -11,6 +11,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 add_executable(Zith_Studio
     main.cpp
+    editor/MainWindow.cpp
     editor/Code.cpp
     editor/Syntax.cpp
     editor/LspClient.cpp
