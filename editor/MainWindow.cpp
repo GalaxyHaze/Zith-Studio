@@ -20,11 +20,7 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QTimer>
-#include <QPainter>
-#include <QPixmap>
 #include <QLineEdit>
-#include <QLinearGradient>
-#include <QPolygonF>
 #include <QPalette>
 
 #include "Code.h"
@@ -59,97 +55,7 @@ static QString baseStyle()
 
 QIcon createZithIcon()
 {
-    static const QColor bismuthColors[] = {
-        QColor(100, 200, 210),
-        QColor(80, 180, 200),
-        QColor(220, 200, 120),
-        QColor(255, 210, 100),
-        QColor(200, 150, 200),
-        QColor(160, 100, 200),
-        QColor(220, 140, 180),
-        QColor(255, 180, 180),
-        QColor(100, 200, 210),
-    };
-    constexpr int numColors = sizeof(bismuthColors) / sizeof(bismuthColors[0]);
-
-    auto makePixmap = [&](int size) {
-        QPixmap pix(size, size);
-        pix.fill(Qt::transparent);
-        QPainter p(&pix);
-        p.setRenderHint(QPainter::Antialiasing);
-        p.translate(size / 2.0, size / 2.0);
-        qreal s = size / 2.0 - 1;
-
-        QPolygonF outer;
-        outer << QPointF(0, -s)
-              << QPointF(s * 0.92, -s * 0.28)
-              << QPointF(s, 0)
-              << QPointF(s * 0.92, s * 0.28)
-              << QPointF(0, s)
-              << QPointF(-s * 0.92, s * 0.28)
-              << QPointF(-s, 0)
-              << QPointF(-s * 0.92, -s * 0.28);
-
-        constexpr int steps = 14;
-        for (int i = 0; i <= steps; ++i) {
-            qreal t = qreal(i) / steps;
-            qreal inset = 1.0 - t * 0.55;
-
-            qreal topIn  = inset;
-            qreal botIn  = inset;
-            qreal leftIn = inset;
-            qreal rightIn = inset;
-
-            QPolygonF stepPoly;
-            stepPoly << QPointF(0, -s * topIn)
-                     << QPointF(s * 0.88 * rightIn, -s * 0.25 * topIn)
-                     << QPointF(s * rightIn, 0)
-                     << QPointF(s * 0.88 * rightIn, s * 0.25 * botIn)
-                     << QPointF(0, s * botIn)
-                     << QPointF(-s * 0.88 * leftIn, s * 0.25 * botIn)
-                     << QPointF(-s * leftIn, 0)
-                     << QPointF(-s * 0.88 * leftIn, -s * 0.25 * topIn);
-
-            int ci = (i * (numColors - 1)) / steps;
-            QColor c = bismuthColors[ci % numColors];
-
-            qreal brightness = 0.7 + 0.3 * (1.0 - t);
-            c = QColor(qMin(255, int(c.red() * brightness)),
-                       qMin(255, int(c.green() * brightness)),
-                       qMin(255, int(c.blue() * brightness)));
-
-            QColor edge = c.darker(140);
-            edge.setAlpha(180);
-            p.setBrush(c);
-            p.setPen(QPen(edge, qMax(0.5, s * 0.02)));
-            p.drawPolygon(stepPoly);
-        }
-
-        QLinearGradient sheen(-s * 0.5, -s * 0.5, s * 0.5, s * 0.5);
-        sheen.setColorAt(0.0, QColor(255, 255, 255, 30));
-        sheen.setColorAt(0.5, QColor(255, 255, 255, 8));
-        sheen.setColorAt(1.0, QColor(255, 255, 255, 0));
-        p.setBrush(sheen);
-        p.setPen(Qt::NoPen);
-        QPolygonF sheenPoly;
-        sheenPoly << QPointF(0, -s)
-                  << QPointF(s, 0)
-                  << QPointF(0, s)
-                  << QPointF(-s * 0.6, -s * 0.3);
-        p.drawPolygon(sheenPoly);
-
-        p.end();
-        return pix;
-    };
-
-    QIcon icon;
-    icon.addPixmap(makePixmap(16));
-    icon.addPixmap(makePixmap(32));
-    icon.addPixmap(makePixmap(48));
-    icon.addPixmap(makePixmap(64));
-    icon.addPixmap(makePixmap(128));
-    icon.addPixmap(makePixmap(256));
-    return icon;
+    return QIcon(QStringLiteral(":/icons/zith-icon.svg"));
 }
 
 MainWindow::MainWindow(QWidget *parent)

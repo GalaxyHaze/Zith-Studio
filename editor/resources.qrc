@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>zith-icon.svg</file>
+    </qresource>
+</RCC>

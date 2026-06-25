@@ -24,6 +24,7 @@ add_executable(Zith_Studio
     editor/CompilerPanel.cpp
     editor/SnippetManager.cpp
     editor/FindReplaceBar.cpp
+    editor/resources.qrc
 )
 
 target_link_libraries(Zith_Studio PRIVATE
